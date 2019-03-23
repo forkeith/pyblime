@@ -26,8 +26,9 @@ text editor widget replacement for the pyqt/pyside2 builtin ones
 The following projects were used:
 
 - [sublimetext](https://www.sublimetext.com) Target to emulate :)
-- [syntect](https://github.com/trishume/syntect) Rust library for syntax highlighting using Sublime Text syntax definitions.
+- [syntect](https://github.com/trishume/syntect) Rust library for syntax highlighting using Sublime Text syntax definitions
+- [pysyntect](https://github.com/brupelo/pysyntect) Python bindings for syntect
 - [pyo3](https://github.com/PyO3/pyo3) Rust bindings for Python. Used to create the syntect python bindings
-- [qscintilla](https://www.riverbankcomputing.com/software/qscintilla/intro) QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
+- [qscintilla](https://www.riverbankcomputing.com/software/qscintilla/intro) QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control
 - [scintilla](https://www.scintilla.org/) Used by QScintilla
-- [pyqt](https://riverbankcomputing.com/software/pyqt/intro) PyQt brings together the Qt C++ cross-platform application framework and the cross-platform interpreted language Python.
+- [pyqt](https://riverbankcomputing.com/software/pyqt/intro) PyQt brings together the Qt C++ cross-platform application framework and the cross-platform interpreted language Python
