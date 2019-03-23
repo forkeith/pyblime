@@ -1,4 +1,4 @@
-from pyblime.pysyntect import *
+from pysyntect import *
 
 NOOP = ScopeStackOp.noop()
 

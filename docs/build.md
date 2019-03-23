@@ -4,12 +4,12 @@ pyblime
 ## Prerequisites
 
 - windows/linux
-- python3.6.x
-- Install manually the pysyntect dependency from the [releases](https://github.com/brupelo/pyblime/releases) section
+- python3.6
+
+## Install
+
+- Install [pysyntect](https://github.com/brupelo/pysyntect/releases)
 - pip install -r requirements.txt
-
-## Build
-
 - `echo %cd% > <location_your_python>/Lib/site-packages/pyblime.pth`
 
 ## Editor Usage
@@ -28,8 +28,3 @@ pyblime
         ex.resize(800,600)
         ex.show()
         sys.exit(app.exec_())
-
-## Notes
-
-- Right now pysntect dependency is not uniform as I'm in the middle of figuring
-out how to generate proper wheels for windows using [pyo3-pack](https://github.com/PyO3/pyo3-pack)
