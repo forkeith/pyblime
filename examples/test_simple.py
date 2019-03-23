@@ -10,7 +10,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     view = View(data_path / "st_build_3149/syntax")
     view.load_theme(data_path / "st_build_3149/themes/Monokai.tmTheme")
-    view.load_file(__file__)
+    view.load_file(data_path / "testfiles/test.py")
     view.resize(800, 600)
     view.show()
     sys.exit(app.exec_())

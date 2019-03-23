@@ -55,19 +55,26 @@ class Example(QMainWindow):
         self.view.theme_changed.connect(self.set_window_title)
         self.setCentralWidget(self.view)
 
-        # Dock files
-        tree = DockFiles(files_path)
+        # Dock test files
+        tree_files = DockFiles(files_path)
         self.dock_files = QDockWidget("Files", self)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.dock_files)
-        self.dock_files.setWidget(tree)
-        tree.file_changed.connect(self.view.load_file)
+        self.dock_files.setWidget(tree_files)
+        tree_files.file_changed.connect(self.view.load_file)
 
-        # Dock themes
-        tree = DockFiles(themes_path)
+        # Dock themes paths
+        tree_themes = DockFiles(themes_path)
         self.dock_themes = QDockWidget("Themes", self)
         self.addDockWidget(Qt.LeftDockWidgetArea, self.dock_themes)
-        self.dock_themes.setWidget(tree)
-        tree.file_changed.connect(self.view.load_theme)
+        self.dock_themes.setWidget(tree_themes)
+        tree_themes.file_changed.connect(self.view.load_theme)
+
+        # Dock theme colors
+        theme_widget = ThemeWidget()
+        self.dock_settings = QDockWidget("Theme settings", self)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.dock_settings)
+        self.dock_settings.setWidget(theme_widget)
+        tree_themes.file_changed.connect(theme_widget.load_theme)
 
     def set_window_title(self):
         ed = self.view

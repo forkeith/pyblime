@@ -5,10 +5,7 @@ from PyQt5.Qt import *  # noqa
 
 from pyblime.sublime_wrapper import *
 from pyblime.syntect import *
-
-
-def qt_color(c):
-    return QColor(c.r, c.g, c.b)
+from pyblime.utils import *
 
 
 class ViewLexer(QsciLexerCustom):
@@ -91,8 +88,8 @@ class View(QsciScintilla):
 
         # Margins
         self.setMarginsFont(font)
-        self.setMarginsBackgroundColor(QColor(128, 128, 128))
-        self.setMarginsForegroundColor(QColor(39, 40, 34))
+        # self.setMarginsBackgroundColor(QColor(39, 40, 34))
+        # self.setMarginsForegroundColor(QColor(128, 128, 128))
         self.setMarginType(0, self.NumberMargin)
         self.setMarginWidth(0, "00000")
 
@@ -476,53 +473,52 @@ class View(QsciScintilla):
         self._reload_lexer()
 
     # -------- PRIVATE METHODS --------
+    def _set_color(self, method_name, col):
+        if not col:
+            return
+
+        getattr(self, method_name)(qt_color(col))
+
     def _reload_lexer(self):
         if not self.syntax or not self.theme:
             self.setLexer(None)
             return
 
-        keys = [
-            # ('setCallTipsBackgroundColor', 'call_tips_background_color'),
-            # ('setCallTipsForegroundColor', 'call_tips_foreground_color'),
-            # ('setCallTipsHighlightColor', 'call_tips_highlight_color'),
-            ('setCaretForegroundColor', 'caret'),
-            # ('setCaretLineBackgroundColor', 'caret_line_background_color'),
-            # ('setColor', 'color'),
-            # ('setEdgeColor', 'edge_color'),
-            # ('setFoldMarginColors', 'fold_margin_colors'),
-            # ('setHotspotBackgroundColor', 'hotspot_background_color'),
-            # ('setHotspotForegroundColor', 'hotspot_foreground_color'),
-            ('setIndentationGuidesBackgroundColor', 'selection'),
-            ('setIndentationGuidesForegroundColor', 'selection'),
-            # ('setIndicatorForegroundColor', 'indicator_foreground_color'),
-            # ('setIndicatorHoverForegroundColor', 'indicator_hover_foreground_color'),
-            # ('setIndicatorOutlineColor', 'indicator_outline_color'),
-            # ('setMarginBackgroundColor', 'margin_background_color'),
-            # ('setMarginsBackgroundColor', 'margins_background_color'),
-            # ('setMarginsForegroundColor', 'margins_foreground_color'),
-            # ('setMarkerBackgroundColor', 'marker_background_color'),
-            # ('setMarkerForegroundColor', 'marker_foreground_color'),
-            ('setMatchedBraceBackgroundColor', 'brackets_background'),
-            ('setMatchedBraceForegroundColor', 'brackets_foreground'),
-            ('setSelectionBackgroundColor', 'selection'),
-            # ('setSelectionBackgroundColor', 'selection_background'),
-            # ('setSelectionForegroundColor', 'selection_foreground'),
-            # ('setUnmatchedBraceBackgroundColor', 'unmatched_brace_background_color'),
-            # ('setUnmatchedBraceForegroundColor', 'unmatched_brace_foreground_color'),
-            # ('setWhitespaceBackgroundColor', 'whitespace_background_color'),
-            # ('setWhitespaceForegroundColor', 'whitespace_foreground_color'),
-        ]
-        for k_scintilla, k_syntect in keys:
-            col = getattr(self.theme.settings, k_syntect)
-            # print(k_scintilla, col)
-            if not col:
-                continue
-            getattr(self, k_scintilla)(qt_color(col))
+        settings = self.theme.settings
+
+        # self._set_color("setCallTipsBackgroundColor", settings.call_tips_background_color)
+        # self._set_color("setCallTipsForegroundColor", settings.call_tips_foreground_color)
+        # self._set_color("setCallTipsHighlightColor", settings.call_tips_highlight_color)
+        self._set_color("setCaretForegroundColor", settings.caret)
+        # self._set_color("setCaretLineBackgroundColor", settings.caret_line_background_color)
+        # self._set_color("setColor", settings.color)
+        # self._set_color("setEdgeColor", settings.edge_color)
+        # self._set_color("setFoldMarginColors", settings.fold_margin_colors)
+        # self._set_color("setHotspotBackgroundColor", settings.hotspot_background_color)
+        # self._set_color("setHotspotForegroundColor", settings.hotspot_foreground_color)
+        self._set_color("setIndentationGuidesBackgroundColor", settings.guide)
+        self._set_color("setIndentationGuidesForegroundColor", settings.guide)
+        # self._set_color("setIndicatorForegroundColor", settings.indicator_foreground_color)
+        # self._set_color("setIndicatorHoverForegroundColor", settings.indicator_hover_foreground_color)
+        # self._set_color("setIndicatorOutlineColor", settings.indicator_outline_color)
+        # self._set_color("setMarginBackgroundColor", settings.margin_background_color)
+        # self._set_color("setMarginsBackgroundColor", settings.margins_background_color)
+        # self._set_color("setMarginsForegroundColor", settings.margins_foreground_color)
+        # self._set_color("setMarkerBackgroundColor", settings.marker_background_color)
+        # self._set_color("setMarkerForegroundColor", settings.marker_foreground_color)
+        self._set_color("setMatchedBraceBackgroundColor", settings.brackets_background)
+        self._set_color("setMatchedBraceForegroundColor", settings.brackets_foreground)
+        self._set_color("setSelectionBackgroundColor", settings.selection)
+        # self._set_color("setSelectionBackgroundColor", settings.selection_background)
+        # self._set_color("setSelectionForegroundColor", settings.selection_foreground)
+        # self._set_color("setUnmatchedBraceBackgroundColor", settings.unmatched_brace_background_color)
+        # self._set_color("setUnmatchedBraceForegroundColor", settings.unmatched_brace_foreground_color)
+        # self._set_color("setWhitespaceBackgroundColor", settings.whitespace_background_color)
+        # self._set_color("setWhitespaceForegroundColor", settings.whitespace_foreground_color)
+
+        bc = settings.background
+        self.resetFoldMarginColors()
+        self.setFoldMarginColors(qt_color(bc), qt_color(bc))
 
         self.lexer = ViewLexer(self.ss, self.syntax, self.theme, parent=self)
         self.setLexer(self.lexer)
-        # print('-' * 80)
-        # for index in range(len(self.ss)):
-        #     theme = self.ss[index]
-        #     print(theme.name)
-        # print('-' * 80)
